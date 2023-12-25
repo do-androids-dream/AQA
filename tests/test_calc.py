@@ -3,26 +3,36 @@ from appium import webdriver
 from appium.options.android import UiAutomator2Options
 from appium.webdriver.common.appiumby import AppiumBy
 import os
+import logging
 
 
 class CalculatorTests(unittest.TestCase):
 
     def setUp(self):
-        device = os.environ.get('DEVICE')
+        self.device = os.environ.get('DEVICE')
         capabilities = {
             "platformName": "Android",
             "automationName": "UiAutomator2",
-            "deviceName": device,
+            "deviceName": self.device,
             "appPackage": "com.google.android.apps.nexuslauncher",
             "appActivity": ".Calculator",
             "language": "en",
             "locale": "US",
             "noReset": True
         }
+        logging.basicConfig(
+            filename='test_logs.txt',
+            level=logging.INFO,
+            format='%(asctime)s - %(levelname)s - %(message)s'
+        )
         appium_server_url = 'http://localhost:4723'
         self.driver = webdriver.Remote(appium_server_url, options=UiAutomator2Options().load_capabilities(capabilities))
         reset_result = '//android.widget.ImageButton[@content-desc="clear"]'
         self.driver.find_element(by=AppiumBy.XPATH, value=reset_result).click()
+
+    def log_result(self, result, expected):
+        success = result == expected
+        logging.info(f'Test {self._testMethodName} on device: {self.device} - {"succeeded" if success else "failed"}')
 
     def tearDown(self):
         if self.driver:
@@ -40,8 +50,9 @@ class CalculatorTests(unittest.TestCase):
         for element in test_elements:
             self.driver.find_element(by=AppiumBy.XPATH, value=element).click()
 
-        result = self.driver.find_element(by=AppiumBy.XPATH, value = result_preview).text
+        result = self.driver.find_element(by=AppiumBy.XPATH, value=result_preview).text
         self.assertEqual(result, expected)
+        self.log_result(result, expected)
 
     def test_positive_subtraction(self):
         test_elements = [
@@ -55,8 +66,9 @@ class CalculatorTests(unittest.TestCase):
 
         for element in test_elements:
             self.driver.find_element(by=AppiumBy.XPATH, value=element).click()
-        result = self.driver.find_element(by=AppiumBy.XPATH, value = result_preview).text
+        result = self.driver.find_element(by=AppiumBy.XPATH, value=result_preview).text
         self.assertEqual(result, expected)
+        self.log_result(result, expected)
 
     def test_negative_zerodivision(self):
         test_elements = [
@@ -73,6 +85,7 @@ class CalculatorTests(unittest.TestCase):
 
         result = self.driver.find_element(by=AppiumBy.XPATH, value=result_preview).text
         self.assertEqual(result, expected)
+        self.log_result(result, expected)
 
     def test_negative_tolarge(self):
         element = '//android.widget.ImageButton[@content-desc="9"]'
@@ -90,7 +103,8 @@ class CalculatorTests(unittest.TestCase):
 
         result = self.driver.find_element(by=AppiumBy.XPATH, value=result_preview).text
         self.assertEqual(result, expected)
+        self.log_result(result, expected)
 
 
-if __name__ == "main":
+if __name__ == "__main__":
     unittest.main()

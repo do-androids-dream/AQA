@@ -1,0 +1,4 @@
+2023-12-25 19:23:35,284 - INFO - Test test_negative_tolarge on Pixel succeeded
+2023-12-25 19:23:43,722 - INFO - Test test_negative_zerodivision on Pixel succeeded
+2023-12-25 19:23:51,527 - INFO - Test test_positive_addition on Pixel succeeded
+2023-12-25 19:23:59,727 - INFO - Test test_positive_subtraction on Pixel succeeded
