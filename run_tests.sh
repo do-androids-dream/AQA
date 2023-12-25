@@ -6,7 +6,7 @@ echo "--run --device <device_name> --test <test_name> (use --test before each <t
 echo "--run all <device_name>"
 declare -a tests=(
   "test_positive_addition"
-  "test_positive_substraction"
+  "test_positive_subtraction"
   "test_negative_zerodivision"
   "test_negative_tolarge"
   )

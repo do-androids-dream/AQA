@@ -43,7 +43,7 @@ class CalculatorTests(unittest.TestCase):
         result = self.driver.find_element(by=AppiumBy.XPATH, value = result_preview).text
         self.assertEqual(result, expected)
 
-    def test_positive_substraction(self):
+    def test_positive_subtraction(self):
         test_elements = [
             '//android.widget.ImageButton[@content-desc="1"]',
             '//android.widget.ImageButton[@content-desc="0"]',
